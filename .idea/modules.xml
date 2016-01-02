@@ -3,7 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/BicinTime.iml" filepath="$PROJECT_DIR$/BicinTime.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bicintime/bicintime.iml" filepath="$PROJECT_DIR$/bicintime/bicintime.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tryapp/tryapp.iml" filepath="$PROJECT_DIR$/tryapp/tryapp.iml" />
     </modules>
   </component>
 </project>
