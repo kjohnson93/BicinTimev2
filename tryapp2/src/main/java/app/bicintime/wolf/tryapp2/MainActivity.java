@@ -1,21 +1,18 @@
-package app.bicintime.wolf.tryapp;
+package app.bicintime.wolf.tryapp2;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,6 +25,9 @@ public class MainActivity extends AppCompatActivity {
 
     //
     SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
+    private CarouselFragment carouselFragment;
+
+    private ViewPagerAdapter adapter;
 
 
     @Override
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.id_toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar); //this has to done from activity
         final ActionBar ab = getSupportActionBar();
         if (ab != null) {
             // Poner ícono del drawer toggle
@@ -51,9 +51,19 @@ public class MainActivity extends AppCompatActivity {
 
 
         tabLayout = (TabLayout) findViewById(R.id.id_tabs);
+
+        carouselFragment = new CarouselFragment();
+/*Creo que esta solución no es valida, porque al final carouselfragment es un fragmento y lo encuentro un paso inncesario, ya que mi objetivo era cambiar solo el contenido
+de viewpager, lo puedo hacer directamente con cualquiera de los fragmentos, si intento hacer esto, desde carouselfragment no le puedo dar la vista que yo quisiera , o lo puedo probar
+LA COSA esta en que a el no se le va la barra al hacer el replace, a mi si se me va todo (no lo he probado pero seguramente si) si lo reemplazo.
+ADEMAS una vez reemplazado YA debería tener la vista definida, y no reemplazarla
+ */
+
+
+
         viewPager = (ViewPager) findViewById(R.id.id_viewpager);
 
-        viewPager.setAdapter(new MyAdapter(getSupportFragmentManager())); //ESTA es la razón por la cuál deba hacer esto en una activity y no en un fragmento como antes...
+        viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), getResources())); //ESTA es la razón por la cuál deba hacer esto en una activity y no en un fragmento como antes...
                                                                             //este metodo solo se puede llamar desde una clase que hereda de FragmentActivity, en este caso se puede
                                                                             //porque AppCompatActivity reune todas esas clases de activity...
 
@@ -67,6 +77,11 @@ public class MainActivity extends AppCompatActivity {
         //rootFragment = new RootFragment();
 
        // rootFragment = (RootFragment) getSupportFragmentManager().getFragments().get(0);
+
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.id_viewpager, carouselFragment)
+                .commit();
 
     }
 
@@ -92,107 +107,29 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    class MyAdapter extends FragmentPagerAdapter {
-
-        // private Context context;
-
-        public MyAdapter(FragmentManager fm) {
-            super(fm);
-            // this.context = context;
-        }
-
-        /**
-         * Return fragment with respect to Position .
-         */
 
 
 
-        @Override
-        public Fragment getItem(int position)
-        {
-            switch (position){
-                //case 0 : return MapFragmentUnused = MapFragmentUnused.newInstance();
-                case 0 : return new BlackFragment();
-                //case 0: return new PrimaryFragment();
-                case 1 : return new PlanRouteFragment();
-
-            }
-            return null;
-        }
-
-        @Override
-        public int getCount() {
-
-            return 2;
-
-        }
-
-        /**
-         * This method returns the title of the tab according to the position.
-         */
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-
-            switch (position){
-                case 0 :
-                    return "Primary";
-                case 1 :
-                    return "Social";
-
-            }
-            return null;
-        }
-
-
-        /**
-         * On each Fragment instantiation we are saving the reference of that Fragment in a Map
-         * It will help us to retrieve the Fragment by position
-         *
-         * @param container
-         * @param position
-         * @return
-         */
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            Fragment fragment = (Fragment) super.instantiateItem(container, position);
-            registeredFragments.put(position, fragment);
-
-            Log.d("BACK", "instantiateItem #1");
-            return fragment;
-        }
-
-        /**
-         * Remove the saved reference from our Map on the Fragment destroy
-         *
-         * @param container
-         * @param position
-         * @param object
-         */
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            registeredFragments.remove(position);
-            super.destroyItem(container, position, object);
-        }
-
-
-        /**
-         * Get the Fragment by position
-         *
-         * @param position tab position of the fragment
-         * @return
-         */
-        public Fragment getRegisteredFragment(int position) {
-            return registeredFragments.get(position);
-        }
-
-    }
 
     @Override
     public void onBackPressed() {
-        Log.d("BACK", "instantiateItem #1");
+/*
+        Log.d("BACK", "onBackPressed #1");
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0 ){ //este fragmentmanager no tiene nada que ver con el child fragment manager, por eso no sirve esta solución
+            Log.d("BACK", "onBackPressed #3: IF");
+            getSupportFragmentManager().popBackStack();
+        } else {
+            Log.d("BACK", "onBackPressed #2: else");
+            super.onBackPressed();
+        }*/
+
+
         // We retrieve the fragment manager of the activity
         FragmentManager frgmtManager = getSupportFragmentManager();
+
+        //OnBackPressListener currentFragment = (OnBackPressListener) adapter.getRegisteredFragment(pager.getCurrentItem());
+
+        //Fragment fragmentadapt = viewPager.getAdapter().getRegisteredFragment(viewPager.getCurrentItem());
 
         // We retrieve the fragment container showed right now
         // The viewpager assigns tags to fragment automatically like this

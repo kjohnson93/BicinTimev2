@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/BicinTime.iml" filepath="$PROJECT_DIR$/BicinTime.iml" />
       <module fileurl="file://$PROJECT_DIR$/bicintime/bicintime.iml" filepath="$PROJECT_DIR$/bicintime/bicintime.iml" />
       <module fileurl="file://$PROJECT_DIR$/tryapp/tryapp.iml" filepath="$PROJECT_DIR$/tryapp/tryapp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tryapp2/tryapp2.iml" filepath="$PROJECT_DIR$/tryapp2/tryapp2.iml" />
     </modules>
   </component>
 </project>
