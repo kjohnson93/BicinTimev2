@@ -4,14 +4,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
-import java.util.List;
 
 /**
  * Created by wolf on 1/3/2016.
@@ -36,6 +35,10 @@ public class YellowFragment extends Fragment implements View.OnKeyListener{
                 BlueFragment blueFragment = new BlueFragment();
                 BlackFragment blackFragment = new BlackFragment();
 
+                */
+
+                BlueFragment blueFragment = new BlueFragment();
+
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.addToBackStack(YellowFragment.class.getName());
@@ -43,21 +46,8 @@ public class YellowFragment extends Fragment implements View.OnKeyListener{
 
 
                 fragmentTransaction.replace(R.id.root_framelayout, blueFragment).commit();
-                fragmentManager.executePendingTransactions();*/
+                fragmentManager.executePendingTransactions();
 
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-
-                List<Fragment> fragments;
-                fragments = fragmentManager.getFragments();
-
-                for (int i = 0; i < fragments.size(); i++) {
-
-                    Log.d("BACK","Fragmentos en yellowfragment: " + fragments.get(i));
-
-                }
-
-
-                fragmentManager.popBackStack();
 
 
             }

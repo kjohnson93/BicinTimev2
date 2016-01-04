@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,7 @@ import android.widget.Button;
 /**
  * Created by wolf on 12/31/2015.
  */
-public class PlanRouteFragmentStartA extends Fragment {
+public class PlanRouteFragmentStartA extends Fragment implements View.OnKeyListener {
 
     @Nullable
     @Override
@@ -46,5 +47,16 @@ public class PlanRouteFragmentStartA extends Fragment {
 
 
         return rootView;
+    }
+
+    @Override
+    public boolean onKey(View v, int keyCode, KeyEvent event) {
+        if( keyCode == KeyEvent.KEYCODE_BACK )
+        {
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            fragmentManager.popBackStack();
+            return true;
+        }
+        return false;
     }
 }
