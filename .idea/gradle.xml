@@ -11,6 +11,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/bicintime" />
+            <option value="$PROJECT_DIR$/rico" />
             <option value="$PROJECT_DIR$/tryapp" />
             <option value="$PROJECT_DIR$/tryapp2" />
           </set>

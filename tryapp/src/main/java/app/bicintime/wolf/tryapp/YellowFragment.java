@@ -1,5 +1,7 @@
 package app.bicintime.wolf.tryapp;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,15 +13,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 /**
  * Created by wolf on 1/3/2016.
  */
 public class YellowFragment extends Fragment implements View.OnKeyListener{
 
+    public static final String DEFAULT = "";
+
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.yellow_fragment_layout, container, false);
 
         Button button = (Button) view.findViewById(R.id.button_yellow);
@@ -46,6 +51,7 @@ public class YellowFragment extends Fragment implements View.OnKeyListener{
 
 
                 fragmentTransaction.replace(R.id.root_framelayout, blueFragment).commit();
+                //fragmentManager.putFragment(savedInstanceState, "FBLUE", blueFragment);
                 fragmentManager.executePendingTransactions();
 
 
@@ -67,6 +73,53 @@ public class YellowFragment extends Fragment implements View.OnKeyListener{
             return true;
         }
         return false;
+    }
+
+    public void changeData(String data){ //sobra
+
+        TextView textView = (TextView) getView().findViewById(R.id.textView_yellow);
+
+        textView.setText(data);
+
+
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.d("BACK", "onActivityCreated de yellowfragment");
+
+        //String data = savedInstanceState.getString("blue");
+
+
+        //TextView textView = (TextView) getView().findViewById(R.id.textView_yellow);
+
+        //textView.setText(data);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Log.d("BACK", "onResume de yellowfragment");
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MyData", Context.MODE_PRIVATE);
+
+        String data = sharedPreferences.getString("Blue_editor_text",DEFAULT);
+
+        TextView textView = (TextView) getView().findViewById(R.id.textView_yellow);
+
+        textView.setText(data);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.remove("Blue_editor_text");
+        editor.commit();
+
+
+
+
     }
 
 }

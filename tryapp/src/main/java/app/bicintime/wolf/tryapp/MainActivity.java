@@ -15,9 +15,13 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity implements Communicator, ExpandableListView.OnChildClickListener {
 
     DrawerLayout mDrawerLayout;
     NavigationView mNavigationView;
@@ -25,6 +29,10 @@ public class MainActivity extends AppCompatActivity {
     public static TabLayout tabLayout;
     public static ViewPager viewPager;
     public static int int_items = 2 ;
+
+    ExpandableListView expandableListView;
+
+
 
     //
     SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
@@ -34,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Log.d("BACK", "OnCreate de MainActivity called");
 
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -52,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         tabLayout = (TabLayout) findViewById(R.id.id_tabs);
         viewPager = (ViewPager) findViewById(R.id.id_viewpager);
+        expandableListView = (ExpandableListView) findViewById(R.id.right_drawer);
 
         viewPager.setAdapter(new MyAdapter(getSupportFragmentManager())); //ESTA es la razón por la cuál deba hacer esto en una activity y no en un fragmento como antes...
                                                                             //este metodo solo se puede llamar desde una clase que hereda de FragmentActivity, en este caso se puede
@@ -68,7 +79,33 @@ public class MainActivity extends AppCompatActivity {
 
        // rootFragment = (RootFragment) getSupportFragmentManager().getFragments().get(0);
 
+        ArrayList<String> groupItem = new ArrayList<String>();  // a partir de aquí empieza lo que he descubierto para el right navigation drawer
+        ArrayList<Object> childItem = new ArrayList<Object>();
+
+        groupItem.add("TechNology");                            //hay que darle datos al right nav drawer sino dará errores nullpointer
+        groupItem.add("Mobile");
+
+        ArrayList<String> child = new ArrayList<String>();
+        child.add("Java");
+        child.add("Drupal");
+        child.add(".Net Framework");
+        child.add("PHP");
+        childItem.add(child);
+
+        child = new ArrayList<String>();
+        child.add("Android");
+        child.add("Window Mobile");
+        child.add("iPHone");
+        child.add("Blackberry");
+        childItem.add(child);
+
+        expandableListView.setAdapter(new NewAdapter(this, groupItem, childItem));  //aquí podré diseñar toda la vista de la lista, it's gonna take some time
+
+        expandableListView.setOnChildClickListener(this);
+
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -90,6 +127,26 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void respond(String data) { //sobra ??
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        YellowFragment yellowFragment = new YellowFragment();
+
+        yellowFragment = (YellowFragment) fragmentManager.findFragmentByTag(YellowFragment.class.getName());
+
+        yellowFragment.changeData(data);
+
+        //YellowFragment = fragmentManager.findFragmentById()
+
+    }
+
+    @Override
+    public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+        return false;
     }
 
     class MyAdapter extends FragmentPagerAdapter {

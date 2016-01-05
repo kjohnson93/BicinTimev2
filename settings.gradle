@@ -1,1 +1,1 @@
-include ':bicintime', ':tryapp', ':tryapp2'
+include ':bicintime', ':tryapp', ':tryapp2', ':rico'

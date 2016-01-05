@@ -1,35 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/root_framelayout"
-    android:background="?android:windowBackground">
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/plan_route_layout">
+    android:background="@color/blue">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/plan_route_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello from plan route fragment"
-        android:id="@+id/textView3"
-        android:layout_gravity="center_horizontal"
-        android:background="@color/blue"/>
+        android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Nice to meet you, you are dead meat"
-        android:id="@+id/textView4"
-        android:layout_gravity="center_horizontal"
-        android:background="@color/orange"/>
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/blue"
+            android:text="Hello from plan route fragment" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/buttonPlanRoute"
-        android:text="Button: Start"/>
-</LinearLayout>
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/orange"
+            android:text="Nice to meet you, you are dead meat" />
+
+        <Button
+            android:id="@+id/buttonPlanRoute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button: Start" />
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_id"
+            android:layout_width="match_parent"
+            android:scrollbars="vertical"
+            android:layout_height="220dp"></android.support.v7.widget.RecyclerView>
+
+        <Button
+            android:id="@+id/buttonPlanRoute2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button: End"
+            />
+
+    </LinearLayout>
 </FrameLayout>

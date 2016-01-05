@@ -5,19 +5,28 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by wolf on 12/26/2015.
  */
 public class PlanRouteFragment extends Fragment {
 
+
+    RecyclerPlanRouteAdapter adapter;
+    RecyclerView recyclerView;
+
     //public empty constrctor may solve the problem??
-    public PlanRouteFragment(){
+    public PlanRouteFragment() {
 
     }
 
@@ -26,6 +35,15 @@ public class PlanRouteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.plan_route, container, false);
+
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_id);
+        adapter = new RecyclerPlanRouteAdapter(getActivity(), getData());
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(adapter);
+        //remember layout manager...
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
 
 
         Button b = (Button) rootView.findViewById(R.id.buttonPlanRoute);
@@ -71,6 +89,35 @@ public class PlanRouteFragment extends Fragment {
         });
         */
         return rootView;
+    }
+
+    public static List<Information> getData() {
+
+        Log.d("RECYCLER", "Entering at getData()");
+
+        List<Information> data = new ArrayList<>();
+
+        int[] icons = {R.drawable.categorias, R.drawable.cuenta, R.drawable.cuenta, R.drawable.configuracion};
+        //int[] icons2 = {R.drawable.drawer_toggle, R.drawable.drawer_toggle, R.drawable.drawer_toggle, R.drawable.drawer_toggle};
+        int[] icons2 = {R.drawable.categorias, R.drawable.cuenta, R.drawable.cuenta, R.drawable.configuracion};
+
+        String[] titles = {"test1", "test2", "test3", "test4"};
+
+        for (int i = 0; i < titles.length && i < icons.length; i++) {
+
+            Information current = new Information();
+            current.title = titles[i];
+            current.iconid1 = icons[i];
+            current.iconid2 = icons2[i];
+
+            data.add(current);
+
+
+        }
+
+        return  data;
+
+
     }
 
 
