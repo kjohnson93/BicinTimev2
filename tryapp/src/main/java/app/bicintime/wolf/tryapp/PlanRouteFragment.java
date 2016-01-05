@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +20,12 @@ import java.util.List;
 /**
  * Created by wolf on 12/26/2015.
  */
-public class PlanRouteFragment extends Fragment {
+public class PlanRouteFragment extends Fragment implements RecyclerPlanRouteAdapter.ClickListener, View.OnKeyListener {
 
 
     RecyclerPlanRouteAdapter adapter;
     RecyclerView recyclerView;
+
 
     //public empty constrctor may solve the problem??
     public PlanRouteFragment() {
@@ -39,6 +41,7 @@ public class PlanRouteFragment extends Fragment {
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_id);
         adapter = new RecyclerPlanRouteAdapter(getActivity(), getData());
         recyclerView.setHasFixedSize(true);
+        adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
         //remember layout manager...
 
@@ -101,12 +104,14 @@ public class PlanRouteFragment extends Fragment {
         //int[] icons2 = {R.drawable.drawer_toggle, R.drawable.drawer_toggle, R.drawable.drawer_toggle, R.drawable.drawer_toggle};
         int[] icons2 = {R.drawable.categorias, R.drawable.cuenta, R.drawable.cuenta, R.drawable.configuracion};
 
-        String[] titles = {"test1", "test2", "test3", "test4"};
+        String[] titles = {"Current Location", "Choose Destination", "test3", "test4"};
+        String[] titles2 = {"Start", "Destination", "test3", "test4"};
 
         for (int i = 0; i < titles.length && i < icons.length; i++) {
 
             Information current = new Information();
             current.title = titles[i];
+            current.title2 = titles2[i];
             current.iconid1 = icons[i];
             current.iconid2 = icons2[i];
 
@@ -120,5 +125,24 @@ public class PlanRouteFragment extends Fragment {
 
     }
 
+    //BACK BUTTON MAKE APP TO DESTROY /CLOSE
 
+    @Override
+    public void itemClicked(View view, int position) {
+
+    }
+
+    @Override
+    public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+        if( keyCode == KeyEvent.KEYCODE_BACK ) {
+
+            getActivity().finish(); // to exit app when pressing this fragment, becuase sometimes can travel to the not intended screen when pressing back button
+            System.exit(0);
+
+
+        }
+
+        return false;
+    }
 }

@@ -5,7 +5,7 @@ package app.bicintime.wolf.tryapp;
  */
 public class Information {
 
-    String title;
+    String title, title2;
     int iconid1;
     int iconid2;
 }
