@@ -20,10 +20,13 @@ import java.util.List;
 /**
  * Created by wolf on 12/26/2015.
  */
+
+//Fragment class that shows the main plan route section of the app, it uses several things as a recycler view and sharedpreferences to read and save things
+
 public class PlanRouteFragment extends Fragment implements RecyclerPlanRouteAdapter.ClickListener, View.OnKeyListener {
 
 
-    RecyclerPlanRouteAdapter adapter;
+    RecyclerPlanRouteAdapter adapter; //this adapter is necessary because I must create a layout for the recycler view with the help of an recyclerview adapter
     RecyclerView recyclerView;
 
 
@@ -38,18 +41,18 @@ public class PlanRouteFragment extends Fragment implements RecyclerPlanRouteAdap
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.plan_route, container, false);
 
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_id);
-        adapter = new RecyclerPlanRouteAdapter(getActivity(), getData());
-        recyclerView.setHasFixedSize(true);
-        adapter.setClickListener(this);
-        recyclerView.setAdapter(adapter);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_id); //getting the recyclerview into java code
+        adapter = new RecyclerPlanRouteAdapter(getActivity(), getData()); //passing the context and some resources(or data) to the adapter
+        recyclerView.setHasFixedSize(true); //I have to check what exactly does this
+        adapter.setClickListener(this);  //means that this activity will handle the clicks on the recycler
+        recyclerView.setAdapter(adapter); //This step is mandatory
         //remember layout manager...
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity())); //this step is also mandatory
 
 
 
-        Button b = (Button) rootView.findViewById(R.id.buttonPlanRoute);
+        Button b = (Button) rootView.findViewById(R.id.buttonPlanRoute);  //using this button test to navigate to another fragment
 
         b.setText("Changed hahahaha");
 
@@ -64,10 +67,11 @@ public class PlanRouteFragment extends Fragment implements RecyclerPlanRouteAdap
                 //SentFragment sentFragment = new SentFragment();
                 PlanRouteFragmentStartA planRouteFragmentStartA = new PlanRouteFragmentStartA();
 
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager(); //note the frag manager is coming from the activity, so I am in the world of the same
+                //manager of the attached activity
 
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.addToBackStack(PlanRouteFragment.class.getName());
+                fragmentTransaction.addToBackStack(PlanRouteFragment.class.getName());//I added it to the backstack with a TAG otherwise will not be saved at the backstack
                 Log.d("BACK", "Entrando a PlanRouteFragmentt");
 
                 YellowFragment yellowFragment = new YellowFragment();
@@ -95,6 +99,7 @@ public class PlanRouteFragment extends Fragment implements RecyclerPlanRouteAdap
     }
 
     public static List<Information> getData() {
+        //With this method I am giving content to the recyclerview with the help of Information class
 
         Log.d("RECYCLER", "Entering at getData()");
 
@@ -135,7 +140,7 @@ public class PlanRouteFragment extends Fragment implements RecyclerPlanRouteAdap
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
 
-        if( keyCode == KeyEvent.KEYCODE_BACK ) {
+        if( keyCode == KeyEvent.KEYCODE_BACK ) { //In this case I want to avoid returning to a previous fragment, this screen should close the app on tapping back button
 
             getActivity().finish(); // to exit app when pressing this fragment, becuase sometimes can travel to the not intended screen when pressing back button
             System.exit(0);

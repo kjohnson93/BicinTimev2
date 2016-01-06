@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 /**
  * Created by wolf on 1/5/2016.
  */
+//I am not using this class for now
+
 public class NavigationDrawerFragment extends Fragment {
 
     private ActionBarDrawerToggle mDrawerToggle;

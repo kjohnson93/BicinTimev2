@@ -12,10 +12,9 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-
+//not using this class for now
 @SuppressWarnings("unchecked")
 public class NewAdapter extends BaseExpandableListAdapter {
-
     public ArrayList<String> groupItem, tempChild;
     public ArrayList<Object> Childtem = new ArrayList<Object>();
     public LayoutInflater minflater;

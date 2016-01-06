@@ -1,5 +1,6 @@
 package app.bicintime.wolf.tryapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -23,19 +24,20 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements Communicator, ExpandableListView.OnChildClickListener {
 
-    DrawerLayout mDrawerLayout;
-    NavigationView mNavigationView;
+    DrawerLayout mDrawerLayout; //my drawerlayout reference
+    NavigationView mNavigationView; //my navigationview reference. Not using it for the moment
 
     public static TabLayout tabLayout;
     public static ViewPager viewPager;
     public static int int_items = 2 ;
 
-    ExpandableListView expandableListView;
+    ExpandableListView expandableListView;  //my expandableListView reference, probably deprecated
 
 
 
     //
-    SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
+    SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();   //this variable was useful for the adapter for registering fragments
+    //but I am not following that approach to navigate through fragments so this variable is probably deprecated.
 
 
     @Override
@@ -46,9 +48,16 @@ public class MainActivity extends AppCompatActivity implements Communicator, Exp
         Log.d("BACK", "OnCreate de MainActivity called");
 
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout); //Getting the drawerlayout to java code
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view); //Getting the navigation view to java code
+        Log.d("NAVDRAWER","WTF");
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.id_toolbar);
+        if(navigationView!=null){ //if the navigationView exists, I am calling the setUpDrawerContent method, which will let me perfom actions on the nav drawer
+            setupDrawerContent(navigationView);
+            Log.d("NAVDRAWER", "WTF 2");
+        }
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.id_toolbar);  //in this part I am setting my toolbar
         setSupportActionBar(toolbar);
         final ActionBar ab = getSupportActionBar();
         if (ab != null) {
@@ -64,10 +73,10 @@ public class MainActivity extends AppCompatActivity implements Communicator, Exp
 
         tabLayout = (TabLayout) findViewById(R.id.id_tabs);
         viewPager = (ViewPager) findViewById(R.id.id_viewpager);
-        expandableListView = (ExpandableListView) findViewById(R.id.right_drawer);
+        expandableListView = (ExpandableListView) findViewById(R.id.right_drawer);  //the right drawer, probably deprecated
 
-        NavigationDrawerFragment navigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
-        navigationDrawerFragment.setUp((DrawerLayout) findViewById(R.id.drawer_layout), toolbar );
+        //NavigationDrawerFragment navigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer); //older approach not using it now
+        //navigationDrawerFragment.setUp((DrawerLayout) findViewById(R.id.drawer_layout), toolbar );
 
         viewPager.setAdapter(new MyAdapter(getSupportFragmentManager())); //ESTA es la razón por la cuál deba hacer esto en una activity y no en un fragmento como antes...
                                                                             //este metodo solo se puede llamar desde una clase que hereda de FragmentActivity, en este caso se puede
@@ -84,6 +93,8 @@ public class MainActivity extends AppCompatActivity implements Communicator, Exp
 
        // rootFragment = (RootFragment) getSupportFragmentManager().getFragments().get(0);
 
+
+        //this part was useful for expandablelistview
         ArrayList<String> groupItem = new ArrayList<String>();  // a partir de aquí empieza lo que he descubierto para el right navigation drawer
         ArrayList<Object> childItem = new ArrayList<Object>();
 
@@ -134,8 +145,63 @@ public class MainActivity extends AppCompatActivity implements Communicator, Exp
         return super.onOptionsItemSelected(item);
     }
 
+    private void selectItem(String title) { //useless function also PLaceholder useless fragment class
+        // Enviar título como arguemento del fragmento
+        Bundle args = new Bundle();
+        args.putString(PlaceholderFragment.ARG_SECTION_TITLE, title);
+
+        Fragment fragment = PlaceholderFragment.newInstance(title);
+        fragment.setArguments(args);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.main_content, fragment)
+                .commit();
+
+        mDrawerLayout.closeDrawers(); // Cerrar drawer
+
+        setTitle(title); // Setear título actual
+
+    }
+
+    private void setupDrawerContent(NavigationView navigationView) { //As I told before, this method will let me navigate through the nav drawer
+        navigationView.setNavigationItemSelectedListener(//item click listener
+                new NavigationView.OnNavigationItemSelectedListener() {
+
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+
+                        Log.d("NAVDRAWER","Clicando item: " + menuItem.toString());
+                        Log.d("NAVDRAWER","Clicando item con ID: " + menuItem.getItemId());
+
+                        int itemDrawer = menuItem.getItemId(); //getting the id of the item clicked
+
+                        if(itemDrawer == R.id.nav_facturas){ //an example of what can I do
+
+                            Log.d("NAVDRAWER","Clicando item con ID dentro del if: " + menuItem.getItemId());
+
+                            Intent intent = new Intent(getApplicationContext(), SettingsActivity.class); //getApplicationContext resolved my problem of passing this not being valid !
+                            mDrawerLayout.closeDrawers(); //need to close the drawer in case of turning back to the previous screen
+
+                            startActivity(intent);//start the next activity
+
+                            Log.d("NAVDRAWER", "SE lee algo aquí?");
+
+                        }
+                        // Marcar item presionado
+                        menuItem.setChecked(true); //After checking it, dunno what exactly does
+                        // Crear nuevo fragmento
+                        //String title = menuItem.getTitle().toString();
+                        // selectItem(title);
+                        return true;
+                    }
+                }
+        );
+    }
+
+
     @Override
-    public void respond(String data) { //sobra ??
+    public void respond(String data) { //sobra ?? //useless method
 
         FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -150,11 +216,11 @@ public class MainActivity extends AppCompatActivity implements Communicator, Exp
     }
 
     @Override
-    public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+    public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) { //overrrided method but I don't find the need of using it
         return false;
     }
 
-    class MyAdapter extends FragmentPagerAdapter {
+    class MyAdapter extends FragmentPagerAdapter { //the viewpager adapter which gives form to the main content on the screen
 
         // private Context context;
 
@@ -172,7 +238,7 @@ public class MainActivity extends AppCompatActivity implements Communicator, Exp
         @Override
         public Fragment getItem(int position)
         {
-            switch (position){
+            switch (position){ //I start with this fragments for tab 0 and 1
                 //case 0 : return MapFragmentUnused = MapFragmentUnused.newInstance();
                 case 0 : return new BlackFragment();
                 //case 0: return new PrimaryFragment();
@@ -183,7 +249,7 @@ public class MainActivity extends AppCompatActivity implements Communicator, Exp
         }
 
         @Override
-        public int getCount() {
+        public int getCount() { //only want two tabs displayed
 
             return 2;
 
@@ -194,13 +260,13 @@ public class MainActivity extends AppCompatActivity implements Communicator, Exp
          */
 
         @Override
-        public CharSequence getPageTitle(int position) {
+        public CharSequence getPageTitle(int position) { //those are my titles
 
             switch (position){
                 case 0 :
-                    return "Primary";
+                    return "Map";
                 case 1 :
-                    return "Social";
+                    return "Plan a Route";
 
             }
             return null;
@@ -216,7 +282,7 @@ public class MainActivity extends AppCompatActivity implements Communicator, Exp
          * @return
          */
         @Override
-        public Object instantiateItem(ViewGroup container, int position) {
+        public Object instantiateItem(ViewGroup container, int position) { //not called method
             Fragment fragment = (Fragment) super.instantiateItem(container, position);
             registeredFragments.put(position, fragment);
 
@@ -232,7 +298,7 @@ public class MainActivity extends AppCompatActivity implements Communicator, Exp
          * @param object
          */
         @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
+        public void destroyItem(ViewGroup container, int position, Object object) { //not called method
             registeredFragments.remove(position);
             super.destroyItem(container, position, object);
         }
@@ -244,33 +310,16 @@ public class MainActivity extends AppCompatActivity implements Communicator, Exp
          * @param position tab position of the fragment
          * @return
          */
-        public Fragment getRegisteredFragment(int position) {
+        public Fragment getRegisteredFragment(int position) { //not called method
             return registeredFragments.get(position);
         }
 
     }
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed() { //with this method I tried to handle the back button but it is unnecessary now because the fragments handle the back button by themselves
         Log.d("BACK", "instantiateItem #1");
-        // We retrieve the fragment manager of the activity
-        FragmentManager frgmtManager = getSupportFragmentManager();
-
-        // We retrieve the fragment container showed right now
-        // The viewpager assigns tags to fragment automatically like this
-        // mPager is our ViewPager instance
-        Fragment fragment = frgmtManager.findFragmentByTag("android:switcher:" + viewPager.getId() + ":" + viewPager.getCurrentItem());
-
-        // And thanks to the fragment container, we retrieve its child fragment manager
-        // holding our fragment in the back stack
-        FragmentManager childFragmentManager = fragment.getChildFragmentManager();
-
-        // And here we go, if the back stack is empty, we let the back button doing its job
-        // Otherwise, we show the last entry in the back stack (our FragmentToShow)
-        if(childFragmentManager.getBackStackEntryCount() == 0){
             super.onBackPressed();
-        } else {
-            childFragmentManager.popBackStack();
-        }
+
     }
 }
