@@ -54,7 +54,9 @@ public class MainActivity extends AppCompatActivity implements Communicator, Exp
         if (ab != null) {
             // Poner ícono del drawer toggle
             ab.setHomeAsUpIndicator(R.drawable.drawer_toggle);
-            ab.setDisplayHomeAsUpEnabled(true);
+            //ab.setDisplayHomeAsUpEnabled(true);
+            ab.setDisplayShowHomeEnabled(true);//tengo que averiguarlo
+
         }
 
 
@@ -63,6 +65,9 @@ public class MainActivity extends AppCompatActivity implements Communicator, Exp
         tabLayout = (TabLayout) findViewById(R.id.id_tabs);
         viewPager = (ViewPager) findViewById(R.id.id_viewpager);
         expandableListView = (ExpandableListView) findViewById(R.id.right_drawer);
+
+        NavigationDrawerFragment navigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
+        navigationDrawerFragment.setUp((DrawerLayout) findViewById(R.id.drawer_layout), toolbar );
 
         viewPager.setAdapter(new MyAdapter(getSupportFragmentManager())); //ESTA es la razón por la cuál deba hacer esto en una activity y no en un fragmento como antes...
                                                                             //este metodo solo se puede llamar desde una clase que hereda de FragmentActivity, en este caso se puede
