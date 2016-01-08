@@ -157,10 +157,14 @@ public class RecyclerPlanRouteAdapter extends RecyclerView.Adapter<RecyclerPlanR
                         */
 
                         PlanRouteFragmentStartA planRouteFragmentStartA = new PlanRouteFragmentStartA();
+                        BlackFragment blackFragment = new BlackFragment();
+                        BlueFragment blueFragment = new BlueFragment();
                         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                         fragmentTransaction.addToBackStack(PlanRouteFragment.class.getName());
-                        fragmentTransaction.replace(R.id.root_framelayout, planRouteFragmentStartA).commit();
+                        Log.d("RECYCLER", "WHy is it not goingggg" + getAdapterPosition());
+                        fragmentTransaction.replace(R.id.id_viewpager, blueFragment).commit();
                         fragmentManager.executePendingTransactions();
+                        Log.d("RECYCLER", "After commit and executepedingtransactions" + getAdapterPosition());
                         break;
                     case 1:  //simply open a new fragment
 

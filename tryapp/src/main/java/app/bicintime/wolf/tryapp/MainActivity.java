@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements Communicator, Exp
     //but I am not following that approach to navigate through fragments so this variable is probably deprecated.
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements Communicator, Exp
         Log.d("NAVDRAWER","WTF");
 
         if(navigationView!=null){ //if the navigationView exists, I am calling the setUpDrawerContent method, which will let me perfom actions on the nav drawer
-            setupDrawerContent(navigationView);
+            //setupDrawerContent(navigationView);
             Log.d("NAVDRAWER", "WTF 2");
         }
 
@@ -240,9 +241,11 @@ public class MainActivity extends AppCompatActivity implements Communicator, Exp
         {
             switch (position){ //I start with this fragments for tab 0 and 1
                 //case 0 : return MapFragmentUnused = MapFragmentUnused.newInstance();
-                case 0 : return new BlackFragment();
+                //case 0 : return new BlackFragment();
+                case 0: return new YellowFragment();
                 //case 0: return new PrimaryFragment();
-                case 1 : return new PlanRouteFragment();
+                //case 1 : return new PlanRouteFragment();
+                case 1: return new PlanRouteFragment();
 
             }
             return null;
@@ -272,6 +275,10 @@ public class MainActivity extends AppCompatActivity implements Communicator, Exp
             return null;
         }
 
+        @Override
+        public int getItemPosition(Object object) {
+            return super.getItemPosition(object);
+        }
 
         /**
          * On each Fragment instantiation we are saving the reference of that Fragment in a Map
@@ -322,4 +329,6 @@ public class MainActivity extends AppCompatActivity implements Communicator, Exp
             super.onBackPressed();
 
     }
+
+
 }

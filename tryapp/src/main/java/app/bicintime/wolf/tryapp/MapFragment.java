@@ -14,27 +14,24 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
- * Created by wolf on 12/31/2015.
+ * Created by wolf on 1/7/2016.
  */
-public class PlanRouteFragmentStartA2 extends Fragment implements GoogleMap.OnMarkerClickListener{
+public class MapFragment extends Fragment {
+
 
     MapView mMapView;
     private GoogleMap googleMap;
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-
         // inflat and return the layout
-        View v = inflater.inflate(R.layout.plan_route_start_a2, container,
+        View v = inflater.inflate(R.layout.map_fragment_layout, container,
                 false);
-        mMapView = (MapView) v.findViewById(R.id.mapView);
+        mMapView = (MapView) v.findViewById(R.id.mapView_map);
         mMapView.onCreate(savedInstanceState);
 
         mMapView.onResume();// needed to get the map to display immediately
@@ -43,7 +40,7 @@ public class PlanRouteFragmentStartA2 extends Fragment implements GoogleMap.OnMa
             MapsInitializer.initialize(getActivity().getApplicationContext());
         } catch (Exception e) {
             e.printStackTrace();
-    }
+        }
 
 
         googleMap = mMapView.getMap();
@@ -70,7 +67,6 @@ public class PlanRouteFragmentStartA2 extends Fragment implements GoogleMap.OnMa
                 .newCameraPosition(cameraPosition));
 
         return v;
-
     }
 
     @Override
@@ -95,15 +91,6 @@ public class PlanRouteFragmentStartA2 extends Fragment implements GoogleMap.OnMa
     public void onLowMemory() {
         super.onLowMemory();
         mMapView.onLowMemory();
-    }
-
-
-    @Override
-    public boolean onMarkerClick(Marker marker) {
-
-
-
-        return false;
     }
 
 }

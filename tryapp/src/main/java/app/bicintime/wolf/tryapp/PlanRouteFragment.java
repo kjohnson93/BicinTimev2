@@ -3,8 +3,6 @@ package app.bicintime.wolf.tryapp;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,7 +10,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +24,8 @@ public class PlanRouteFragment extends Fragment implements RecyclerPlanRouteAdap
 
 
     RecyclerPlanRouteAdapter adapter; //this adapter is necessary because I must create a layout for the recycler view with the help of an recyclerview adapter
-    RecyclerView recyclerView;
+    RecyclerPlanRouteAdapter adapter2;
+    RecyclerView recyclerView, recyclerView2;
 
 
     //public empty constrctor may solve the problem??
@@ -42,16 +40,43 @@ public class PlanRouteFragment extends Fragment implements RecyclerPlanRouteAdap
         View rootView = inflater.inflate(R.layout.plan_route, container, false);
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_id); //getting the recyclerview into java code
+        recyclerView2 = (RecyclerView) rootView.findViewById(R.id.recycler_id2);
         adapter = new RecyclerPlanRouteAdapter(getActivity(), getData()); //passing the context and some resources(or data) to the adapter
+        adapter2 = new RecyclerPlanRouteAdapter(getActivity(), getData2());
         recyclerView.setHasFixedSize(true); //I have to check what exactly does this
+
+        adapter2.setClickListener(this);
         adapter.setClickListener(this);  //means that this activity will handle the clicks on the recycler
         recyclerView.setAdapter(adapter); //This step is mandatory
+        recyclerView2.setAdapter(adapter2);
         //remember layout manager...
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity())); //this step is also mandatory
+        recyclerView2.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        /*
+        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            @Override
+            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+                return e.getAction() == MotionEvent.ACTION_MOVE;
+            }
+
+            @Override
+            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+
+            }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+            }
+        });
+        */
+
+        //Have a problem with recycler view scrolling, i guess i would resolve it when  I learn more about touch events
 
 
-
+        /*
         Button b = (Button) rootView.findViewById(R.id.buttonPlanRoute);  //using this button test to navigate to another fragment
 
         b.setText("Changed hahahaha");
@@ -84,7 +109,7 @@ public class PlanRouteFragment extends Fragment implements RecyclerPlanRouteAdap
 
 
             }
-        });
+        });*/
             /*
         Button b = (Button) getActivity().findViewById(R.id.buttonPlanRoute);
         //El problema esta en que intento a acceder antes de que se cree, aun cuando la actividad se finaliza, solo finaliza el primer fragmento
@@ -105,12 +130,12 @@ public class PlanRouteFragment extends Fragment implements RecyclerPlanRouteAdap
 
         List<Information> data = new ArrayList<>();
 
-        int[] icons = {R.drawable.categorias, R.drawable.cuenta, R.drawable.cuenta, R.drawable.configuracion};
+        int[] icons = {R.drawable.ic_markers, R.drawable.ic_markers, R.drawable.ic_clocks};
         //int[] icons2 = {R.drawable.drawer_toggle, R.drawable.drawer_toggle, R.drawable.drawer_toggle, R.drawable.drawer_toggle};
-        int[] icons2 = {R.drawable.categorias, R.drawable.cuenta, R.drawable.cuenta, R.drawable.configuracion};
+        int[] icons2 = {R.drawable.ic_togglerbar, R.drawable.ic_togglerbar, R.drawable.ic_togglerbar};
 
-        String[] titles = {"Current Location", "Choose Destination", "test3", "test4"};
-        String[] titles2 = {"Start", "Destination", "test3", "test4"};
+        String[] titles = {"Current Location", "Choose Destination", "Choose a Time"};
+        String[] titles2 = {"Start", "Destination", "00:00h"};
 
         for (int i = 0; i < titles.length && i < icons.length; i++) {
 
@@ -130,10 +155,44 @@ public class PlanRouteFragment extends Fragment implements RecyclerPlanRouteAdap
 
     }
 
+    public static List<Information> getData2(){
+
+
+
+        List<Information> data = new ArrayList<>();
+
+        int[] icons = {R.drawable.ic_hearths, R.drawable.ic_sounds, R.drawable.ic_lanes};
+        //int[] icons2 = {R.drawable.drawer_toggle, R.drawable.drawer_toggle, R.drawable.drawer_toggle, R.drawable.drawer_toggle};
+        int[] icons2 = {R.drawable.ic_togglerbar, R.drawable.ic_togglerbar, R.drawable.ic_togglerbar};
+
+        String[] titles = {"Fitness Level", "Loudiness ?", "Bike lane ?"};
+        String[] titles2 = {"Very Strong", "Don't mind", "Don't mind"};
+
+        for (int i = 0; i < titles.length && i < icons.length; i++) {
+
+            Information current = new Information();
+            current.title = titles[i];
+            current.title2 = titles2[i];
+            current.iconid1 = icons[i];
+            current.iconid2 = icons2[i];
+
+            data.add(current);
+
+
+        }
+
+        return  data;
+
+
+
+    }
+
     //BACK BUTTON MAKE APP TO DESTROY /CLOSE
 
     @Override
     public void itemClicked(View view, int position) {
+
+
 
     }
 
@@ -150,4 +209,6 @@ public class PlanRouteFragment extends Fragment implements RecyclerPlanRouteAdap
 
         return false;
     }
+
+
 }

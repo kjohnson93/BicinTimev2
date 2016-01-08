@@ -10,6 +10,7 @@
     <color name="yellow">#F4FA58</color>
     <color name="blue">#2E64FE</color>
     <color name="window_background">#FFF5F5F5</color>
+    <color name="grey_light">#F2F2F2</color>
 
     <color name="primaryColor">#346D7D</color>
     <color name="primaryDarkColor">#1F515F</color>
